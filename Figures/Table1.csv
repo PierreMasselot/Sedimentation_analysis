@@ -1,0 +1,4 @@
+"call","Model","df","AIC","BIC","logLik","Test","L.Ratio","p-value"
+"mixedres","lme.formula(fixed = sed ~ year + ddif, data = regdat, random = ~year |     loc, na.action = na.omit, control = list(opt = \"optim\"))",1,7,-3784.45179118784,-3744.31294206454,1899.22589559392,"",NA,NA
+"norandomtrend","lme.formula(fixed = sed ~ year + ddif, data = regdat, random = ~1 |     loc, na.action = na.omit, control = list(opt = \"optim\"))",2,5,-3685.63371258342,-3656.96310606678,1847.81685629171,"1 vs 2",102.818078604419,4.71343921886308e-23
+"norandomeff","lm(formula = sed ~ year + ddif, data = regdat, na.action = na.omit)",3,4,-3420.41248365515,-3397.47599844184,1714.20624182757,"2 vs 3",267.221228928274,4.57658680873022e-60
