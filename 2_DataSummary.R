@@ -59,7 +59,6 @@ plot.pts(locations, borders = stLawrence, values = nObsLoc,
 text(par("usr")[1], par("usr")[4], "B", cex = 3, xpd = T, pos = 3)
 
 dev.print(png, filename = "Figures/SupFigure1.png", res = 200, units = "in")
-dev.print(pdf, file = "Figures/SupFigure1.pdf")
 
 #-----------------------
 #  Summary statistics (section 3.1)

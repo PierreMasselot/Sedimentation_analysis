@@ -12,6 +12,7 @@ library(rgdal)
 library(raster)
 library(maptools)
 library(fields)
+library(colorspace)
 
 source("0_Functions.R")
 
@@ -95,7 +96,8 @@ plot.pts(locations, borders = stLawrence, values = coef(mixedres)[,"year"],
 text(par("usr")[1], par("usr")[4], "B", cex = 3, xpd = T)
 
 dev.print(png, filename = "Figures/Figure2.png", res = 200, units = "in")
-dev.print(pdf, file = "Figures/Figure2.pdf")
+setEPS()
+dev.print(postscript, file = "Figures/Figure2.eps")
 
 #----- Model assessment
 norandomtrend <- update(mixedres, random = ~ 1 | loc)
@@ -106,17 +108,28 @@ comparison <- anova(mixedres, norandomtrend, norandomeff)
 write.table(comparison, file = "Figures/Table1.csv", sep = ",")
 
 #----- Diagnostic
+x11(width = 10, height = 10)
+layout(matrix(c(1,1,2,2,0,3,3,0), nrow = 2, byrow = T))
+
 # Residual plot vs year
 plot(regdat$year[-mixedres$na.action], residuals(mixedres),
-  ylab = "Residuals", xlab = "year")
+  ylab = "Residuals", xlab = "year", xaxt = "n")
 lines(lowess(residuals(mixedres) ~ regdat$year[-mixedres$na.action]),
   col = "red", lwd = 2)
+axis(1, at = pretty(1:nt) - mean(1:nt), labels = pretty(1:nt) + 2002)
+text(par("usr")[1], par("usr")[4], "A", cex = 3, xpd = T, adj = c(1.5, -.5))
 
 # Residual plot vs date difference
 plot(regdat$ddif[-mixedres$na.action], residuals(mixedres),
-  ylab = "Residuals", xlab = "Date difference")
+  ylab = "Residuals", xlab = "Date difference", xaxt = "n")
 lines(lowess(residuals(mixedres) ~ regdat$ddif[-mixedres$na.action]),
   col = "red", lwd = 2)
+axis(1, at = pretty(dateDiff) - mean(dateDiff, na.rm = T), 
+    labels = pretty(dateDiff))
+text(par("usr")[1], par("usr")[4], "B", cex = 3, xpd = T, adj = c(1.5, -.5))
   
 # Distribution of residuals
-hist(residuals(mixedres), breaks = 20, xlab = "Residuals")
+hist(residuals(mixedres), breaks = 20, xlab = "Residuals", main = "", col = 4)
+text(par("usr")[1], par("usr")[4], "C", cex = 3, xpd = T, adj = c(1.5, -.5))
+
+dev.print(png, filename = "Figures/SupFigure2.png", res = 200, units = "in")
